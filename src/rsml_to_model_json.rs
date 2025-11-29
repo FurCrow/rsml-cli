@@ -12,17 +12,23 @@ pub struct StyleSheet {
     id: String,
     attributes: Attributes,
     children: Vec<Child>,
+    tags: Vec<String>
 }
 
 impl Serialize for StyleSheet {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where S: Serializer
     {
-        let mut x = serializer.serialize_struct("StyleSheet", 4)?;
+        let mut x = serializer.serialize_struct("StyleSheet", 5)?;
         x.serialize_field("className", "StyleSheet")?;
         x.serialize_field("id", &self.id)?;
         x.serialize_field("attributes", &self.attributes)?;
         x.serialize_field("children", &self.children)?;
+        
+        let mut map = HashMap::new();
+        map.insert("Tags", &self.tags);
+        x.serialize_field("properties", &map)?;
+
         x.end()
     }
 }
@@ -240,6 +246,7 @@ pub fn rsml_to_model_json(path: &Path, watcher: &mut WatcherContext) -> String {
         id: path.normalize().strip_prefix(&watcher.input_dir).unwrap().to_str().unwrap().to_string(),
         attributes: rsml_root.attributes,
         children: children,
+        tags: rsml_root.tags
     };
 
     let formatter = PrettyFormatter::with_indent(b"    ");

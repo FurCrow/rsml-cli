@@ -711,8 +711,6 @@ dependencies = [
 [[package]]
 name = "rbx-rsml"
 version = "0.1.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e11040bce11638532edacdfd174ec927711cd47d1ecaad640583dbb3ad3f9052"
 dependencies = [
  "guarded",
  "indexmap",
